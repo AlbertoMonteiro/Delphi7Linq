@@ -3,7 +3,7 @@ unit PowerObjectList;
 interface
 
 uses
-  Contnrs;
+  Contnrs, SysUtils, Math;
 
 type
   TFunctionObjectBoolean = function(obj: TObject): Boolean of object;
@@ -12,6 +12,7 @@ type
 
   TPowerObjectList = class(TObjectList)
   public
+    function Skip(quantidade: Integer): TPowerObjectList;
     function Where(predicado: TFunctionObjectBoolean): TPowerObjectList;
     function Select(predicado: TFunctionObjectObject): TPowerObjectList;
     function Sum(): Integer; overload;
@@ -44,6 +45,16 @@ begin
   Result := TPowerObjectList.Create;
   for I := 0 to Self.Count - 1 do
     Result.Add(predicado(Self.Items[I]));
+end;
+
+function TPowerObjectList.Skip(quantidade: Integer): TPowerObjectList;
+var
+  I, de: Integer;
+begin
+  de := Min(quantidade, Self.Count - 1);
+  Result := TPowerObjectList.Create;
+  for I := de to Self.Count - 1 do
+    Result.Add(Self.Items[I]);
 end;
 
 function TPowerObjectList.Sum(predicado: TFunctionObjectInteger): Integer;

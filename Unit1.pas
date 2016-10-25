@@ -49,9 +49,9 @@ uses PowerStringList;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  ShowMessage(Format('%d s„o maiores de idade', [FPessoas.Where(MaiorDeIdade).Count]));
-  ShowMessage(Format('As idades somadas È igual a: %d', [FPessoas.Where(MaiorDeIdade).Sum(IdadeDaPessoa)]));
-  ShowMessage(Format('As idades das pessoas menores de idade somadas È igual a: %d',
+  ShowMessage(Format('%d s√£o maiores de idade', [FPessoas.Where(MaiorDeIdade).Count]));
+  ShowMessage(Format('As idades somadas √© igual a: %d', [FPessoas.Where(MaiorDeIdade).Sum(IdadeDaPessoa)]));
+  ShowMessage(Format('As idades das pessoas menores de idade somadas √© igual a: %d',
     [FPessoas.Where(MenorDeIdade).Select(IdadePessoa).Sum]));
   FPessoas.ForEach(ExibeDadosPessoa);
 end;
@@ -84,7 +84,7 @@ begin
   FPessoas.Add(pessoa);
 
   pessoa := TPessoa.Create;
-  pessoa.Nome := 'MarÌlia';
+  pessoa.Nome := 'Mar√≠lia';
   pessoa.Idade := 26;
   FPessoas.Add(pessoa);
 
@@ -121,7 +121,7 @@ var
 begin
   try
     valores := TStringList.Create;
-    valores.Delimiter := '|';
+    valores.Delimiter := ',';
     valores.DelimitedText := obj;
     pessoa := TPessoa.Create;
     pessoa.Nome := valores[0];

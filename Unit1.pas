@@ -22,14 +22,17 @@ type
 
   TForm1 = class(TForm)
     Button1: TButton;
+    Button2: TButton;
     procedure FormCreate(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
   private
     FPessoas: TPowerObjectList;
     function MaiorDeIdade(obj: TObject): Boolean;
     function MenorDeIdade(obj: TObject): Boolean;
     function IdadePessoa(obj: TObject): TObject;
     function IdadeDaPessoa(obj: TObject): integer;
+    function ToPessoa(obj: String): TObject;
     procedure ExibeDadosPessoa(pessoa: TObject);
   public
     { Public declarations }
@@ -42,12 +45,26 @@ implementation
 
 {$R *.dfm}
 
+uses PowerStringList;
+
 procedure TForm1.Button1Click(Sender: TObject);
 begin
   ShowMessage(Format('%d são maiores de idade', [FPessoas.Where(MaiorDeIdade).Count]));
   ShowMessage(Format('As idades somadas é igual a: %d', [FPessoas.Where(MaiorDeIdade).Sum(IdadeDaPessoa)]));
-  ShowMessage(Format('As idades das pessoas menores de idade somadas é igual a: %d', [FPessoas.Where(MenorDeIdade).Select(IdadePessoa).Sum]));
+  ShowMessage(Format('As idades das pessoas menores de idade somadas é igual a: %d',
+    [FPessoas.Where(MenorDeIdade).Select(IdadePessoa).Sum]));
   FPessoas.ForEach(ExibeDadosPessoa);
+end;
+
+procedure TForm1.Button2Click(Sender: TObject);
+var
+  lista: TPowerStringList;
+begin
+  lista := TPowerStringList.Create;
+  lista.LoadFromFile('..\..\pessoas.csv');
+  FPessoas.FreeInstance;
+  FPessoas := lista.Select(ToPessoa);
+  lista.FreeInstance;
 end;
 
 procedure TForm1.ExibeDadosPessoa(pessoa: TObject);
@@ -95,6 +112,24 @@ end;
 function TForm1.MenorDeIdade(obj: TObject): Boolean;
 begin
   Result := TPessoa(obj).Idade < 18;
+end;
+
+function TForm1.ToPessoa(obj: String): TObject;
+var
+  pessoa: TPessoa;
+  valores: TStringList;
+begin
+  try
+    valores := TStringList.Create;
+    valores.Delimiter := '|';
+    valores.DelimitedText := obj;
+    pessoa := TPessoa.Create;
+    pessoa.Nome := valores[0];
+    pessoa.Idade := StrToInt(valores[1]);
+    Result := pessoa;
+  finally
+    valores.FreeInstance;
+  end;
 end;
 
 end.

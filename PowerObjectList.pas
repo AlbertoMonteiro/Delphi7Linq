@@ -6,6 +6,7 @@ uses
   Contnrs, SysUtils, Math;
 
 type
+  TProcedureObject = procedure(obj: TObject) of object;
   TFunctionObjectBoolean = function(obj: TObject): Boolean of object;
   TFunctionObjectObject = function(obj: TObject): TObject of object;
   TFunctionObjectInteger = function(obj: TObject): Integer of object;
@@ -15,6 +16,7 @@ type
     function Skip(quantidade: Integer): TPowerObjectList;
     function Where(predicado: TFunctionObjectBoolean): TPowerObjectList;
     function Select(predicado: TFunctionObjectObject): TPowerObjectList;
+    procedure ForEach(predicado: TProcedureObject);
     function Sum(): Integer; overload;
     function Sum(predicado: TFunctionObjectInteger): Integer; overload;
     function Average(predicado: TFunctionObjectInteger): Integer;
@@ -36,6 +38,14 @@ begin
   Result := 0;
   for I := 0 to Self.Count - 1 do
     Result := Result + Integer(Self.Items[I]);
+end;
+
+procedure TPowerObjectList.ForEach(predicado: TProcedureObject);
+var
+  I: Integer;
+begin
+  for I := 0 to Self.Count - 1 do
+    predicado(Self.Items[I]);
 end;
 
 function TPowerObjectList.Select(predicado: TFunctionObjectObject): TPowerObjectList;

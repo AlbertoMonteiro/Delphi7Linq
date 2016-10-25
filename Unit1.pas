@@ -3,19 +3,21 @@ unit Unit1;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
-  System.Classes, Vcl.Graphics, PowerObjectList,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls;
+  System.SysUtils, System.Classes, PowerObjectList,
+  Vcl.Forms, Vcl.Dialogs, Vcl.Controls, Vcl.StdCtrls;
 
 type
+  TEstadoCivil = (Solteiro, Casado, Divorciado, Viuvo);
 
   TPessoa = class
   private
     FNome: string;
     FIdade: integer;
+    FEstadoCivil: TEstadoCivil;
   public
     property Nome: string read FNome write FNome;
     property Idade: integer read FIdade write FIdade;
+    property EstadoCivil: TEstadoCivil read FEstadoCivil write FEstadoCivil;
   end;
 
   TForm1 = class(TForm)
@@ -28,6 +30,7 @@ type
     function MenorDeIdade(obj: TObject): Boolean;
     function IdadePessoa(obj: TObject): TObject;
     function IdadeDaPessoa(obj: TObject): integer;
+    procedure ExibeDadosPessoa(pessoa: TObject);
   public
     { Public declarations }
   end;
@@ -43,8 +46,13 @@ procedure TForm1.Button1Click(Sender: TObject);
 begin
   ShowMessage(Format('%d são maiores de idade', [FPessoas.Where(MaiorDeIdade).Count]));
   ShowMessage(Format('As idades somadas é igual a: %d', [FPessoas.Where(MaiorDeIdade).Sum(IdadeDaPessoa)]));
-  ShowMessage(Format('As idades das pessoas menores de idade somadas é igual a: %d',
-    [FPessoas.Where(MenorDeIdade).Select(IdadePessoa).Sum]));
+  ShowMessage(Format('As idades das pessoas menores de idade somadas é igual a: %d', [FPessoas.Where(MenorDeIdade).Select(IdadePessoa).Sum]));
+  FPessoas.ForEach(ExibeDadosPessoa);
+end;
+
+procedure TForm1.ExibeDadosPessoa(pessoa: TObject);
+begin
+  ShowMessage(Format('%s tem %d anos', [TPessoa(pessoa).Nome, TPessoa(pessoa).Idade]));
 end;
 
 procedure TForm1.FormCreate(Sender: TObject);

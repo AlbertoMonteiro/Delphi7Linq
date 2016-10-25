@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2016/10/25 19:11:36.554,=C:\Users\maril\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/10/25 19:12:07.278,=C:\Users\maril\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/10/25 19:17:59.399,C:\Users\maril\Documents\Embarcadero\Studio\Projects\PowerObjectList.pas=C:\Users\maril\Documents\Embarcadero\Studio\Projects\Unit2.pas</Transaction>
+    <Transaction>2016/10/25 19:26:18.642,C:\Users\maril\Documents\Embarcadero\Studio\Projects\Linq\Unit1.pas=C:\Users\maril\Documents\Embarcadero\Studio\Projects\Unit1.pas</Transaction>
+    <Transaction>2016/10/25 19:26:18.642,C:\Users\maril\Documents\Embarcadero\Studio\Projects\Linq\Unit1.dfm=C:\Users\maril\Documents\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>2016/10/25 19:26:19.497,C:\Users\maril\Documents\Embarcadero\Studio\Projects\Linq\PowerObjectList.pas=C:\Users\maril\Documents\Embarcadero\Studio\Projects\PowerObjectList.pas</Transaction>
+    <Transaction>2016/10/25 19:26:20.289,C:\Users\maril\Documents\Embarcadero\Studio\Projects\Linq\Project1.dproj=C:\Users\maril\Documents\Embarcadero\Studio\Projects\Project1.dproj</Transaction>
+  </Transactions>
+</BorlandProject>

@@ -7,9 +7,14 @@ uses
 
 type
   TProcedureObject = procedure(obj: TObject) of object;
+
   TFunctionObjectBoolean = function(obj: TObject): Boolean of object;
+
   TFunctionObjectObject = function(obj: TObject): TObject of object;
+
   TFunctionObjectInteger = function(obj: TObject): Integer of object;
+
+  TFunctionIntegerObject = function(i: Integer): TObject of object;
 
   TPowerObjectList = class(TObjectList)
   public
@@ -17,7 +22,7 @@ type
     function Where(predicado: TFunctionObjectBoolean): TPowerObjectList;
     function Select(predicado: TFunctionObjectObject): TPowerObjectList;
     procedure ForEach(predicado: TProcedureObject);
-    function Sum(): Integer; overload;
+    function Sum: Integer; overload;
     function Sum(predicado: TFunctionObjectInteger): Integer; overload;
     function Average(predicado: TFunctionObjectInteger): Integer;
   end;
@@ -31,7 +36,7 @@ begin
   Result := Trunc(Self.Sum(predicado) / Self.Count);
 end;
 
-function TPowerObjectList.Sum(): Integer;
+function TPowerObjectList.Sum: Integer;
 var
   I: Integer;
 begin
@@ -89,3 +94,4 @@ begin
 end;
 
 end.
+

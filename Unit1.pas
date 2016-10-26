@@ -3,8 +3,8 @@ unit Unit1;
 interface
 
 uses
-  System.SysUtils, System.Classes, PowerObjectList,
-  Vcl.Forms, Vcl.Dialogs, Vcl.Controls, Vcl.StdCtrls;
+  SysUtils, Classes, PowerObjectList, PowerGenericObjectList, Contnrs,
+  Forms, Dialogs, Controls, StdCtrls;
 
 type
   TEstadoCivil = (Solteiro, Casado, Divorciado, Viuvo);
@@ -27,12 +27,12 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
   private
-    FPessoas: TPowerObjectList;
+    FPessoas: TPowerGenericObjectList;
     function MaiorDeIdade(obj: TObject): Boolean;
     function MenorDeIdade(obj: TObject): Boolean;
     function IdadePessoa(obj: TObject): TObject;
     function IdadeDaPessoa(obj: TObject): integer;
-    function ToPessoa(obj: String): TObject;
+    function ToPessoa(obj: TObject): TObject;
     procedure ExibeDadosPessoa(pessoa: TObject);
   public
     { Public declarations }
@@ -45,25 +45,26 @@ implementation
 
 {$R *.dfm}
 
-uses PowerStringList;
+uses
+  PowerStringList;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  ShowMessage(Format('%d s√£o maiores de idade', [FPessoas.Where(MaiorDeIdade).Count]));
-  ShowMessage(Format('As idades somadas √© igual a: %d', [FPessoas.Where(MaiorDeIdade).Sum(IdadeDaPessoa)]));
-  ShowMessage(Format('As idades das pessoas menores de idade somadas √© igual a: %d',
+  ShowMessage(Format('%d s„o maiores de idade', [FPessoas.Where(MaiorDeIdade).Count]));
+  ShowMessage(Format('As idades somadas È igual a: %d', [FPessoas.Where(MaiorDeIdade).Sum(IdadeDaPessoa)]));
+  ShowMessage(Format('As idades das pessoas menores de idade somadas È igual a: %d',
     [FPessoas.Where(MenorDeIdade).Select(IdadePessoa).Sum]));
   FPessoas.ForEach(ExibeDadosPessoa);
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
 var
-  lista: TPowerStringList;
+  lista: TStringList;
 begin
-  lista := TPowerStringList.Create;
-  lista.LoadFromFile('..\..\pessoas.csv');
+  lista := TStringList.Create;
+  lista.LoadFromFile('pessoas.csv');
   FPessoas.FreeInstance;
-  FPessoas := lista.Select(ToPessoa);
+  FPessoas := TPowerGenericObjectList.FromStringList(lista).Select(ToPessoa);
   lista.FreeInstance;
 end;
 
@@ -76,7 +77,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   pessoa: TPessoa;
 begin
-  FPessoas := TPowerObjectList.Create;
+  FPessoas := TPowerGenericObjectList.FromObjectList(TObjectList.Create);
 
   pessoa := TPessoa.Create;
   pessoa.Nome := 'Alberto';
@@ -84,7 +85,7 @@ begin
   FPessoas.Add(pessoa);
 
   pessoa := TPessoa.Create;
-  pessoa.Nome := 'Mar√≠lia';
+  pessoa.Nome := 'MarÌlia';
   pessoa.Idade := 26;
   FPessoas.Add(pessoa);
 
@@ -114,15 +115,16 @@ begin
   Result := TPessoa(obj).Idade < 18;
 end;
 
-function TForm1.ToPessoa(obj: String): TObject;
+function TForm1.ToPessoa(obj: TObject): TObject;
 var
   pessoa: TPessoa;
   valores: TStringList;
 begin
+  valores:= nil;
   try
     valores := TStringList.Create;
     valores.Delimiter := ',';
-    valores.DelimitedText := obj;
+    valores.DelimitedText := string(obj);
     pessoa := TPessoa.Create;
     pessoa.Nome := valores[0];
     pessoa.Idade := StrToInt(valores[1]);

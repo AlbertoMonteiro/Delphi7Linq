@@ -83,12 +83,15 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="PowerObjectList.pas"/>
+        <DCCReference Include="PowerStringList.pas"/>
         <DCCReference Include="Unit1.pas">
             <Form>Form1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="PowerObjectList.pas"/>
-        <DCCReference Include="PowerStringList.pas"/>
+        <DCCReference Include="PowerGenericObjectList.pas"/>
+        <DCCReference Include="LazyPowerGenericObjectList.pas"/>
+        <DCCReference Include="ColletionManager.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

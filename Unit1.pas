@@ -4,7 +4,7 @@ interface
 
 uses
   SysUtils, Classes, PowerObjectList, PowerGenericObjectList, Contnrs,
-  Forms, Dialogs, Controls, StdCtrls;
+  Forms, Dialogs, Controls, StdCtrls, LazyPowerGenericObjectList;
 
 type
   TEstadoCivil = (Solteiro, Casado, Divorciado, Viuvo);
@@ -27,7 +27,7 @@ type
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
   private
-    FPessoas: TPowerGenericObjectList;
+    FPessoas: TLazyPowerGenericObjectList;
     function MaiorDeIdade(obj: TObject): Boolean;
     function MenorDeIdade(obj: TObject): Boolean;
     function IdadePessoa(obj: TObject): TObject;
@@ -50,11 +50,11 @@ uses
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  ShowMessage(Format('%d são maiores de idade', [FPessoas.Where(MaiorDeIdade).Count]));
-  ShowMessage(Format('As idades somadas é igual a: %d', [FPessoas.Where(MaiorDeIdade).Sum(IdadeDaPessoa)]));
-  ShowMessage(Format('As idades das pessoas menores de idade somadas é igual a: %d',
-    [FPessoas.Where(MenorDeIdade).Select(IdadePessoa).Sum]));
-  FPessoas.ForEach(ExibeDadosPessoa);
+  //ShowMessage(Format('%d são maiores de idade', [FPessoas.Where(MaiorDeIdade).Count]));
+  //ShowMessage(Format('As idades somadas é igual a: %d', [FPessoas.Where(MaiorDeIdade).Sum(IdadeDaPessoa)]));
+  //ShowMessage(Format('As idades das pessoas menores de idade somadas é igual a: %d',
+  //  [FPessoas.Where(MenorDeIdade).Select(IdadePessoa).Sum]));
+  FPessoas.Where(MaiorDeIdade).ForEach(ExibeDadosPessoa);
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -62,9 +62,9 @@ var
   lista: TStringList;
 begin
   lista := TStringList.Create;
-  lista.LoadFromFile('pessoas.csv');
+  lista.LoadFromFile('..\..\pessoas.csv');
   FPessoas.FreeInstance;
-  FPessoas := TPowerGenericObjectList.FromStringList(lista).Select(ToPessoa);
+  FPessoas := TLazyPowerGenericObjectList.FromStringList(lista).Select(ToPessoa);
   lista.FreeInstance;
 end;
 
@@ -77,7 +77,7 @@ procedure TForm1.FormCreate(Sender: TObject);
 var
   pessoa: TPessoa;
 begin
-  FPessoas := TPowerGenericObjectList.FromObjectList(TObjectList.Create);
+  FPessoas := TLazyPowerGenericObjectList.FromObjectList(TObjectList.Create);
 
   pessoa := TPessoa.Create;
   pessoa.Nome := 'Alberto';
